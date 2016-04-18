@@ -1,0 +1,99 @@
+{
+     "variables": {
+             "ami_id": "ami-7abd0209",
+             "access_key": "{{env `aws_access_key`}}",
+             "secret_key": "{{env `aws_secret_key`}}"
+        },
+     "builders": [
+             {
+                 "type": "amazon-ebs",
+                 "communicator": "ssh",
+                 "ssh_pty": "true",
+                 "name": "centos-7",
+                 "access_key": "{{user `access_key`}}",
+                 "secret_key": "{{user `secret_key`}}",
+                 "region": "eu-west-1",
+                 "force_deregister": "true",
+                 "source_ami": "{{user `ami_id`}}",
+                 "instance_type": "t2.micro",
+                 "ssh_username": "centos",
+                 "ami_name": "kel-{{isotime | clean_ami_name}}",
+                 "ami_description": "A simple AMI by me",
+                 "tags": {
+                         "role": "server"
+                 },
+                 "run_tags": {
+                         "role": "buildSystem"
+                 }
+            },
+            {
+                "type": "virtualbox-iso",
+                "boot_command": [
+                     "<esc><wait>",
+                     "linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/cs.cfg",
+                     "<enter><wait>"
+                ],
+                "boot_wait": "10s",
+                "guest_os_type": "RedHat_64",
+                "http_directory": "http",
+                "iso_url": "http://mirror.vorboss.net/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1511.iso",
+                "iso_checksum_type": "md5",
+                "iso_checksum": "88c0437f0a14c6e2c94426df9d43cd67",
+                "communicator": "ssh",
+                "ssh_pty": "true",
+                "ssh_username": "vagrant",
+                "ssh_password": "vagrant",
+                "ssh_wait_timeout": "10000s",
+                "shutdown_command": "echo 'vagrant' | sudo -S /sbin/halt -h -p",
+                "vm_name": "packed-centos-7",
+                "vboxmanage": [
+                   [
+                     "modifyvm",
+                     "{{.Name}}",
+                     "--memory",
+                     "512"
+                   ],
+                   [
+                     "modifyvm",
+                     "{{.Name}}",
+                     "--cpus",
+                     "2"
+                   ]
+                ],
+                "headless": "false"
+                
+            }
+    ],
+    "provisioners": [
+             {
+                "type": "shell",
+                "script": "puppet.sh"
+
+             },
+             {
+                "type": "file",
+                "source": "ToUpload/",
+                "destination": "/tmp"
+             },
+             {
+                "type": "puppet-masterless",
+                "manifest_file": "packer.pp"
+             }
+                   
+
+    ],
+    "post-processors": [
+             {
+                "type": "vagrant",
+                "output": "{{.Provider}}-packed-centos-7-{{ timestamp }}.box",
+                "only": ["virtualbox-iso"]
+             }
+
+
+
+    ]
+
+
+
+
+}
