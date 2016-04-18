@@ -9,7 +9,7 @@
                  "type": "amazon-ebs",
                  "communicator": "ssh",
                  "ssh_pty": "true",
-                 "name": "centos-7",
+                 "name": "ami",
                  "access_key": "{{user `access_key`}}",
                  "secret_key": "{{user `secret_key`}}",
                  "region": "eu-west-1",
@@ -28,6 +28,7 @@
             },
             {
                 "type": "virtualbox-iso",
+                "name": "vagrantbox",
                 "boot_command": [
                      "<esc><wait>",
                      "linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/cs.cfg",
