@@ -85,7 +85,7 @@
     "post-processors": [
              {
                 "type": "vagrant",
-                "output": "{{.Provider}}-packed-centos-7-{{ timestamp }}.box",
+                "output": "{{.Provider}}-packed-centos-7.box",
                 "only": ["virtualbox-iso"]
              }
 
