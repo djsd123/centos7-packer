@@ -94,7 +94,7 @@
              {
                 "type": "vagrant",
                 "output": "{{.Provider}}-packed-centos-7.box",
-                "only": ["virtualbox-iso"]
+                "only": ["vagrantbox"]
              }
 
 
