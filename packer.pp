@@ -1,9 +1,16 @@
 
 class packer_provision {
 
+  #Install and start the nginx webserver
+
   service { 'nginx':
     ensure    => running,
     enable    => true,
+    require   => Package['nginx'],
+  }
+
+  package { 'nginx':
+    ensure    => installed,
   }
 /*
   file { '/etc/nginx/sites-enabled/default':
@@ -15,7 +22,7 @@ class packer_provision {
 
   package { 'supervisor':
     ensure    => installed,
-  } ~>
+  } ->
 
   file { 'app-supervisor.conf':
     ensure    => present,

@@ -77,6 +77,13 @@
                 "destination": "/tmp"
              },
              {
+               "type": "shell",
+               "inline": [
+                 "echo '***** Adding NGINX repository *****'",
+                 "sudo cp /tmp/nginx.repo /etc/yum.repos.d/"
+               ]
+             },
+             {
                 "type": "puppet-masterless",
                 "manifest_file": "packer.pp"
              }
