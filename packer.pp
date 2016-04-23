@@ -1,11 +1,14 @@
+# Install additional packages
+  $packages = ['nginx','nmap','bind-utils','git','tree','telnet','lsof']
 
-  #Install and start the nginx webserver
 
-  package { 'nginx':
-    ensure    => installed,
-  } ->
+
+  #Start the nginx webserver
 
   service { 'nginx':
     ensure    => running,
     enable    => true,
+    require   => $packages,
   }
+
+  ensure_packages($packages)
