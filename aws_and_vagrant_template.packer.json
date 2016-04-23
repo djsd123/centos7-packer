@@ -68,8 +68,16 @@
     "provisioners": [
              {
                 "type": "shell",
-                "script": "puppet.sh"
-
+                "script": "Scripts/get_started.sh"
+             },
+             {
+                "type": "shell",
+                "scripts": [
+                  "Scripts/vBoxguestadditions.sh",
+                  "Scripts/vagrant_auth.sh"
+                ],
+                "execute_command": "{{.Vars}} sudo -S -E bash '{{.Path}}'",
+                "only": ["vagrantbox"]
              },
              {
                 "type": "file",
@@ -77,8 +85,8 @@
                 "destination": "/tmp"
              },
              {
-               "type": "shell",
-               "inline": [
+                "type": "shell",
+                "inline": [
                  "echo '***** Adding NGINX repository *****'",
                  "sudo cp /tmp/nginx.repo /etc/yum.repos.d/"
                ]
@@ -93,6 +101,7 @@
     "post-processors": [
              {
                 "type": "vagrant",
+                "compression_level": 9,
                 "output": "{{.Provider}}-packed-centos-7.box",
                 "only": ["vagrantbox"]
              }
