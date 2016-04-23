@@ -4,7 +4,13 @@
 # IntelliJ project files
 .idea
 *.iml
-.box
+*.box
 out
 gen
+After
+Vagrantfile
+packer_cache
+.vagrant
+amazon_ebs.json
+playbook.yml
 # Created by .ignore support plugin (hsz.mobi)
