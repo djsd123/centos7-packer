@@ -15,9 +15,9 @@ export aws_secret_key='...'
 ```
 Once you're all set, just run packer with the build option and sit back.
 ```
-packer build 'template.json file'
+packer build <template.json file>
 ```
 Use the 'only' flag if you want to build from just one of the providers. (Options: ami or vagrantbox)
 ```
-packer build -only vagrantbox 'template.json file'
+packer build -only vagrantbox <template.json file>
 ```
